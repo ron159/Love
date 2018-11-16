@@ -43,7 +43,8 @@ function Petal(a,f,b,e,c,d)
     this.angle=e;
     this.bloom=d;
     this.growFactor=c;
-    this.r=1;this.isfinished=false
+    this.r=1;
+    this.isfinished=false
 }
 Petal.prototype=
 {
@@ -77,7 +78,8 @@ function Bloom(e,d,f,a,b)
     this.p=e;
     this.r=d;this.c=f;
     this.pc=a;this.petals=[];
-    this.garden=b;this.init();
+    this.garden=b;
+    this.init();
     this.garden.addBloom(this)
 }
 Bloom.prototype=
@@ -170,7 +172,7 @@ Garden.options=
     {
         min:8,max:10
     },
-    density:10,growSpeed:1000/60,color:
+    density:10,growSpeed:1000/60,color:/*调节心生长速度*/
     {
         rmin:128,rmax:255,gmin:0,gmax:128,bmin:0,bmax:128,opacity:0.1
     },
@@ -184,7 +186,8 @@ Garden.randomInt=function(b,a)
 {
     return Math.floor(Math.random()*(a-b+1))+b
 };
-Garden.circle=2*Math.PI;Garden.degrad=function(a)
+Garden.circle=2*Math.PI;
+Garden.degrad=function(a)
 {
     return Garden.circle/360*a
 };
