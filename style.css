@@ -1,0 +1,519 @@
+/* ============================================
+   Love Project - Main Stylesheet
+   Interstellar Math: 笛卡尔之心
+   ============================================ */
+
+/* --- CSS Variables --- */
+:root {
+    --primary-cyan: #0ff;
+    --primary-pink: #ff3366;
+    --bg-dark: #000;
+    --panel-bg: rgba(0, 20, 40, 0.6);
+    --panel-border: rgba(0, 255, 255, 0.3);
+    --text-dim: #aaa;
+    --text-bright: #fff;
+    --glow-cyan: 0 0 10px #0ff;
+    --glow-green: 0 0 10px #0f0;
+}
+
+/* --- 基础设置 --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--primary-cyan);
+}
+
+canvas {
+    display: block;
+}
+
+/* --- 全息 UI 面板风格 --- */
+#ui-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 280px;
+    padding: 15px;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-left: 4px solid var(--primary-cyan);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    user-select: none;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+h1 {
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-bright);
+    text-shadow: var(--glow-cyan);
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: var(--text-dim);
+}
+
+.data-value {
+    color: var(--primary-cyan);
+    font-weight: bold;
+}
+
+/* FPS 波动条 */
+#fps-bar {
+    width: 100%;
+    height: 4px;
+    background: #333;
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+#fps-fill {
+    width: 60px;
+    height: 100%;
+    background: #0f0;
+    box-shadow: var(--glow-green);
+    transition: width 0.2s, background-color 0.2s;
+    border-radius: 2px;
+}
+
+/* --- 交互按钮与控制面板 --- */
+#controls {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sci-fi-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-cyan);
+    color: var(--primary-cyan);
+    padding: 10px 30px;
+    font-family: inherit;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: default;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    opacity: 0.8;
+    text-align: center;
+    min-width: 220px;
+}
+
+.sci-fi-btn.clickable {
+    cursor: pointer;
+}
+
+.sci-fi-btn.clickable:hover {
+    background: rgba(0, 255, 255, 0.1);
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.sci-fi-btn.clickable:active {
+    transform: scale(0.98);
+}
+
+#love-timer {
+    font-size: 11px;
+    color: #00ffaa;
+    margin-top: 4px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* 装饰性角落 */
+.corner {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--primary-cyan);
+    pointer-events: none;
+}
+
+.tr {
+    top: -2px;
+    right: -2px;
+    border-bottom: none;
+    border-left: none;
+}
+
+.bl {
+    bottom: -2px;
+    left: -2px;
+    border-top: none;
+    border-right: none;
+}
+
+.tl {
+    top: -2px;
+    left: -2px;
+    border-bottom: none;
+    border-right: none;
+}
+
+.br {
+    bottom: -2px;
+    right: -2px;
+    border-top: none;
+    border-left: none;
+}
+
+/* --- 加载提示 --- */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--primary-cyan);
+    font-size: 20px;
+    animation: blink 1s infinite;
+    z-index: 1000;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* --- 纪念日庆祝效果 --- */
+#anniversary-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, rgba(255, 51, 102, 0.9), rgba(255, 102, 153, 0.9));
+    border: 2px solid #fff;
+    border-radius: 20px;
+    padding: 30px 50px;
+    text-align: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 0 50px rgba(255, 51, 102, 0.5);
+}
+
+#anniversary-alert.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+#anniversary-alert h2 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+#anniversary-alert p {
+    margin: 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#anniversary-alert .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+#anniversary-alert .close-btn:hover {
+    opacity: 1;
+}
+
+/* --- 功能按钮组 --- */
+#feature-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.feature-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    color: var(--primary-cyan);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.feature-btn:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.feature-btn.active {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* --- 心跳动画指示器 --- */
+#heartbeat-indicator {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--primary-pink);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+#heartbeat-indicator .pulse {
+    display: inline-block;
+    animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        text-shadow: 0 0 5px var(--primary-pink);
+    }
+
+    50% {
+        opacity: 1;
+        text-shadow: 0 0 20px var(--primary-pink), 0 0 40px var(--primary-pink);
+    }
+}
+
+/* --- 粒子拖尾效果遮罩 --- */
+#trail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- 响应式设计 --- */
+@media screen and (max-width: 768px) {
+    #ui-container {
+        width: 200px;
+        padding: 10px;
+        top: 10px;
+        left: 10px;
+        font-size: 10px;
+    }
+
+    h1 {
+        font-size: 12px;
+        letter-spacing: 1px;
+    }
+
+    .data-row {
+        font-size: 10px;
+    }
+
+    #controls {
+        bottom: 15px;
+        gap: 10px;
+    }
+
+    .sci-fi-btn {
+        padding: 8px 15px;
+        font-size: 11px;
+        min-width: 160px;
+        letter-spacing: 1px;
+    }
+
+    #love-timer {
+        font-size: 10px;
+    }
+
+    /* 功能按钮优化 */
+    #feature-buttons {
+        top: 10px;
+        right: 10px;
+        gap: 8px;
+    }
+
+    .feature-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    #heartbeat-indicator {
+        bottom: 70px;
+        font-size: 10px;
+    }
+
+    #anniversary-alert {
+        padding: 20px 30px;
+        width: 90%;
+        max-width: 300px;
+    }
+
+    #anniversary-alert h2 {
+        font-size: 20px;
+    }
+
+    #anniversary-alert p {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #ui-container {
+        width: calc(100% - 20px);
+        max-width: 200px;
+        left: 10px;
+        top: 10px;
+    }
+
+    .sci-fi-btn {
+        min-width: calc(100vw - 40px);
+        max-width: 280px;
+        padding: 8px 15px;
+        font-size: 11px;
+    }
+
+    #controls {
+        bottom: 20px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* 功能按钮保持在右上角，调整间距 */
+    #feature-buttons {
+        top: 10px;
+        right: 10px;
+        gap: 8px;
+    }
+
+    .feature-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    /* 隐藏心跳指示器，节省空间 */
+    #heartbeat-indicator {
+        display: none;
+    }
+
+    /* 隐藏 toggle-ui 按钮，避免混淆 */
+    #toggle-ui {
+        display: none !important;
+    }
+}
+
+/* --- 隐藏 UI 按钮 (移动端可选) --- */
+#toggle-ui {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    #toggle-ui {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: calc(100% - 60px);
+        z-index: 101;
+    }
+
+    #ui-container.hidden {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+}
+
+/* --- 音乐波形指示器 --- */
+.music-waves {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 20px;
+}
+
+.music-waves span {
+    display: block;
+    width: 3px;
+    height: 100%;
+    background: var(--primary-cyan);
+    animation: wave 1s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+.music-waves span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.music-waves span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.music-waves span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.music-waves span:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: scaleY(0.3);
+    }
+
+    50% {
+        transform: scaleY(1);
+    }
+}
+
+.music-waves.paused span {
+    animation-play-state: paused;
+    transform: scaleY(0.3);
+}
